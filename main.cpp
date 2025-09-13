@@ -2,7 +2,9 @@
 #include <gdiplus.h>
 #include <vector>
 #include <string>
+#include <wchar.h> // For swprintf_s
 #include "ScreenCapture.h"
+#include "resource.h"
 
 // Global variables
 HINSTANCE hInst;
@@ -33,7 +35,11 @@ void CreateChatWindow();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     hInst = hInstance;
-    hMainIcon = LoadIcon(NULL, IDI_APPLICATION);
+    // Load custom icon from resources
+    hMainIcon = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_MAIN_ICON), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
+    if (!hMainIcon) {
+        hMainIcon = LoadIcon(NULL, IDI_APPLICATION);
+    }
 
     // Initialize GDI+
     Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -163,10 +169,11 @@ LRESULT CALLBACK ChatWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
                 // Append image placeholders
                 for (size_t i = 0; i < g_base64Images.size(); ++i) {
                     int msgLen = GetWindowTextLength(hMessages);
+                    wchar_t placeholder[100];
+                    swprintf_s(placeholder, 100, L"[Image %zu attached]", i + 1);
                     SendMessageW(hMessages, EM_SETSEL, (WPARAM)msgLen, (LPARAM)msgLen);
                     if(msgLen > 0) SendMessageW(hMessages, EM_REPLACESEL, 0, (LPARAM)L"\r\n");
-                    std::wstring placeholder = L"[Image " + std::to_wstring(i + 1) + L" attached]";
-                    SendMessageW(hMessages, EM_REPLACESEL, 0, (LPARAM)placeholder.c_str());
+                    SendMessageW(hMessages, EM_REPLACESEL, 0, (LPARAM)placeholder);
                 }
 
                 // Clear thumbnails and data
@@ -184,9 +191,9 @@ LRESULT CALLBACK ChatWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             if (capture.CaptureFullScreen()) {
                 g_base64Images.push_back(capture.GetBase64String());
                 
-                // For simplicity, we'll just add a string to the listbox
-                std::wstring thumbText = L"Image " + std::to_wstring(g_base64Images.size());
-                SendDlgItemMessage(hWnd, IDC_THUMBNAIL_LIST, LB_ADDSTRING, 0, (LPARAM)thumbText.c_str());
+                wchar_t thumbText[100];
+                swprintf_s(thumbText, 100, L"Image %zu", g_base64Images.size());
+                SendDlgItemMessage(hWnd, IDC_THUMBNAIL_LIST, LB_ADDSTRING, 0, (LPARAM)thumbText);
             } else {
                 MessageBoxW(hWnd, L"Screen capture failed.", L"Error", MB_OK | MB_ICONERROR);
             }
