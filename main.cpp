@@ -1,11 +1,11 @@
 #include <windows.h>
 #include <gdiplus.h>
 #include <vector>
-#include <string>
+#include <string> // Required for std::to_wstring
 #include "ScreenCapture.h"
 
 // Global variables
-HINSTANCE hInst;
+HISTANCE hInst;
 HWND hIconWnd = NULL;
 HWND hChatWnd = NULL;
 HICON hMainIcon;
@@ -189,7 +189,7 @@ LRESULT CALLBACK ChatWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
                 std::wstring thumbText = L"Image " + std::to_wstring(g_base64Images.size());
                 SendDlgItemMessage(hWnd, IDC_THUMBNAIL_LIST, LB_ADDSTRING, 0, (LPARAM)thumbText.c_str());
             } else {
-                MessageBox(hWnd, L"Screen capture failed.", L"Error", MB_OK | MB_ICONERROR);
+                MessageBoxW(hWnd, L"Screen capture failed.", L"Error", MB_OK | MB_ICONERROR);
             }
 
             ShowWindow(hChatWnd, SW_SHOW);

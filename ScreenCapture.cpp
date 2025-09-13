@@ -1,5 +1,5 @@
 #include "ScreenCapture.h"
-#include <wincrypt.h>
+#include <wincrypt.h> // For CryptBinaryToStringA
 #include <objidl.h>
 #include <vector>
 
