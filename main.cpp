@@ -1,11 +1,11 @@
 #include <windows.h>
 #include <gdiplus.h>
 #include <vector>
-#include <string> // Required for std::to_wstring
+#include <string>
 #include "ScreenCapture.h"
 
 // Global variables
-HISTANCE hInst;
+HINSTANCE hInst;
 HWND hIconWnd = NULL;
 HWND hChatWnd = NULL;
 HICON hMainIcon;
@@ -30,7 +30,6 @@ LRESULT CALLBACK IconWndProc(HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK ChatWndProc(HWND, UINT, WPARAM, LPARAM);
 void CreateFloatingIcon();
 void CreateChatWindow();
-void AddThumbnail(HBITMAP hBitmap);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     hInst = hInstance;

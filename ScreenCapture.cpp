@@ -1,5 +1,5 @@
 #include "ScreenCapture.h"
-#include <wincrypt.h> // For CryptBinaryToStringA
+#include <wincrypt.h>
 #include <objidl.h>
 #include <vector>
 
@@ -99,15 +99,17 @@ std::string CScreenCapture::GetBase64String() {
     pStream->Release();
 
     DWORD strSize = 0;
-    CryptBinaryToStringA(buffer.data(), buffer.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, NULL, &strSize);
-    if (strSize == 0) return "";
+    if (!CryptBinaryToStringA(buffer.data(), buffer.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, NULL, &strSize)) {
+        return "";
+    }
 
     std::string base64String;
     base64String.resize(strSize);
-    CryptBinaryToStringA(buffer.data(), buffer.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, &base64String[0], &strSize);
+    if (!CryptBinaryToStringA(buffer.data(), buffer.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, &base64String[0], &strSize)) {
+        return "";
+    }
     
-    // Resize to actual size, as CryptBinaryToStringA includes null terminator in size
-    base64String.resize(strSize - 1);
+    base64String.resize(strSize > 0 ? strSize - 1 : 0); // Remove null terminator if it exists
 
     return base64String;
 }
