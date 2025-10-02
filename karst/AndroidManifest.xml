@@ -3,7 +3,7 @@
     package="com.karst.app">
     <application
         android:label="Karst"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/appicon">
     <activity android:name="crc643f46942d9dd1fff9.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
