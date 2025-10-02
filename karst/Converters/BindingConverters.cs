@@ -2,7 +2,8 @@ using SkiaSharp;
 
 namespace karst.Converters;
 
-public static class BindingConverters
+public class BindingConverters
+    public BindingConverters() { }
 {
     public static readonly IValueConverter IsNotNull = new FuncConverter<object, bool>(
         value => value != null, 

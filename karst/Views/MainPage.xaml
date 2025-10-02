@@ -4,7 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Note Taking App"
              xmlns:viewmodels="clr-namespace:karst.ViewModels"
+             xmlns:converters="clr-namespace:karst.Converters"
              x:DataType="viewmodels:MainViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BindingConverters x:Key="BindingConverters" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*,Auto" 
           ColumnDefinitions="*,Auto"
