@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
-  <rect width="108" height="108" rx="24" fill="#007ACC"/>
-  <text x="50%" y="58%" text-anchor="middle" fill="#fff" font-size="48" font-family="Arial" dy=".3em">K</text>
-</svg>
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+  <background android:drawable="@mipmap/ic_launcher_adaptive_back"/>
+  <foreground android:drawable="@mipmap/ic_launcher_adaptive_fore"/>
+</adaptive-icon>
