@@ -80,7 +80,7 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     private void StartStroke(SKPoint point)
     {
-        if (!IsDrawingEnabled) return;
+        if (!IsDrawingEnabled || SelectedTool == null) return;
 
         currentStroke = new Stroke
         {
@@ -112,8 +112,11 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     private void ClearCanvas()
     {
-        CurrentNote.Strokes.Clear();
-        SaveNoteCommand.Execute(null);
+        if (CurrentNote != null)
+        {
+            CurrentNote.Strokes.Clear();
+            SaveNoteCommand.Execute(null);
+        }
     }
 
     [RelayCommand]
@@ -121,8 +124,11 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            CurrentNote.ModifiedDate = DateTime.Now;
-            await _dataService.SaveNoteAsync(CurrentNote);
+            if (CurrentNote != null)
+            {
+                CurrentNote.ModifiedDate = DateTime.Now;
+                await _dataService.SaveNoteAsync(CurrentNote);
+            }
         }
         catch (Exception ex)
         {
@@ -135,8 +141,11 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            var filePath = await _pdfExportService.ExportToPdfAsync(CurrentNote);
-            await Shell.Current.DisplayAlert("Success", $"Note exported to: {filePath}", "OK");
+            if (CurrentNote != null)
+            {
+                var filePath = await _pdfExportService.ExportToPdfAsync(CurrentNote);
+                await Shell.Current.DisplayAlert("Success", $"Note exported to: {filePath}", "OK");
+            }
         }
         catch (Exception ex)
         {
@@ -161,7 +170,10 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
                 {
                     ImagePath = result.FullPath
                 };
-                CurrentNote.Images.Add(imageAnnotation);
+                if (CurrentNote != null)
+                {
+                    CurrentNote.Images.Add(imageAnnotation);
+                }
                 await SaveNote();
             }
         }
@@ -180,13 +192,15 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
 
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("folderId", out object folderIdObj) &&
-            query.TryGetValue("noteId", out object noteIdObj))
+        if (query.TryGetValue("folderId", out object? folderIdObj) &&
+            query.TryGetValue("noteId", out object? noteIdObj))
         {
             var folderId = folderIdObj as string;
             var noteId = noteIdObj as string;
-
-            await LoadNote(folderId, noteId);
+            if (!string.IsNullOrEmpty(folderId) && !string.IsNullOrEmpty(noteId))
+            {
+                await LoadNote(folderId, noteId);
+            }
         }
     }
 
@@ -219,7 +233,7 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
         }
     }
 
-    partial void OnSelectedToolChanged(DrawingTool value)
+    partial void OnSelectedToolChanged(DrawingTool? value)
     {
         if (value != null)
         {
