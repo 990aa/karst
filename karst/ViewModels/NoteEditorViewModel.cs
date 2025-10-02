@@ -8,6 +8,8 @@ namespace karst.ViewModels;
 
 public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
 {
+    public List<PaperType> PaperTypes { get; } = Enum.GetValues(typeof(PaperType)).Cast<PaperType>().ToList();
+    public List<PaperSize> PaperSizes { get; } = Enum.GetValues(typeof(PaperSize)).Cast<PaperSize>().ToList();
     private readonly IDataService _dataService;
     private readonly IPdfExportService _pdfExportService;
 
