@@ -26,6 +26,16 @@
     <PackageReference Include="PdfSharp" Version="6.1.0" />
   </ItemGroup>
 
+  <!-- Android App Icon Resources -->
+  <ItemGroup>
+    <MauiImage Include="Resources\Maui\mipmap-anydpi-v26\ic_launcher.xml" />
+    <MauiImage Include="Resources\Maui\mipmap-hdpi\ic_launcher.png" />
+    <MauiImage Include="Resources\Maui\mipmap-mdpi\ic_launcher.png" />
+    <MauiImage Include="Resources\Maui\mipmap-xhdpi\ic_launcher.png" />
+    <MauiImage Include="Resources\Maui\mipmap-xxhdpi\ic_launcher.png" />
+    <MauiImage Include="Resources\Maui\mipmap-xxxhdpi\ic_launcher.png" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
