@@ -13,17 +13,18 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     private readonly IDataService _dataService;
     private readonly IPdfExportService _pdfExportService;
 
-    [ObservableProperty]
-    private Note currentNote;
 
     [ObservableProperty]
-    private Folder currentFolder;
+    private Note? currentNote;
 
     [ObservableProperty]
-    private DrawingTool selectedTool;
+    private Folder? currentFolder;
 
     [ObservableProperty]
-    private List<DrawingTool> availableTools;
+    private DrawingTool? selectedTool;
+
+    [ObservableProperty]
+    private List<DrawingTool>? availableTools;
 
     [ObservableProperty]
     private bool isDrawingEnabled = true;
@@ -41,9 +42,9 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     private PaperSize selectedPaperSize = PaperSize.A4;
 
     [ObservableProperty]
-    private List<SKColor> availableColors;
+    private List<SKColor>? availableColors;
 
-    private Stroke currentStroke;
+    private Stroke? currentStroke;
 
     public NoteEditorViewModel(IDataService dataService, IPdfExportService pdfExportService)
     {
@@ -100,7 +101,7 @@ public partial class NoteEditorViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     private void EndStroke()
     {
-        if (currentStroke != null && currentStroke.Points.Count > 0)
+        if (currentStroke != null && currentStroke.Points.Count > 0 && CurrentNote != null)
         {
             CurrentNote.Strokes.Add(currentStroke);
             currentStroke = null;
