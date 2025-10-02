@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="karst.Views.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Note Taking App"
+             xmlns:viewmodels="clr-namespace:karst.ViewModels"
+             x:DataType="viewmodels:MainViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto" 
+          ColumnDefinitions="*,Auto"
+          Padding="10"
+          RowSpacing="10">
+
+        <!-- Header -->
+        <Label Grid.Row="0" 
+               Grid.Column="0"
+               Text="My Notes" 
+               FontSize="28" 
+               FontAttributes="Bold"
+               VerticalOptions="Center" />
+
+        <Button Grid.Row="0" 
+                Grid.Column="1"
+                Text="New Folder" 
+                Command="{Binding CreateFolderCommand}"
+                BackgroundColor="#007ACC"
+                TextColor="White"
+                Padding="20,10" />
+
+        <!-- Folders List -->
+        <CollectionView Grid.Row="1" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="2"
+                        ItemsSource="{Binding Folders}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedFolder}">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Folder">
+                    <Grid Padding="10" 
+                          HeightRequest="120"
+                          RowDefinitions="*,Auto">
+
+                        <Frame BackgroundColor="#F0F0F0" 
+                               Padding="15"
+                               HasShadow="True"
+                               CornerRadius="10">
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding CreatedDate, StringFormat='Created: {0:MMM dd, yyyy}'}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+                                    <Label Text="{Binding Notes.Count, StringFormat='{0} notes'}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1"
+                                        Text="🗑️"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteFolderCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent"
+                                        FontSize="16"
+                                        Padding="0"
+                                        Margin="0" />
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Bottom App Bar -->
+        <Grid Grid.Row="2" 
+              Grid.Column="0" 
+              Grid.ColumnSpan="2"
+              ColumnDefinitions="*,Auto"
+              Padding="0,10">
+
+            <Label Grid.Column="0"
+                   Text="{Binding SelectedFolder.Name, StringFormat='Selected: {0}'}"
+                   FontSize="14"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding SelectedFolder, Converter={x:Static BindingConverters.IsNotNull}}" />
+
+            <Button Grid.Column="1"
+                    Text="New Note"
+                    Command="{Binding CreateNoteCommand}"
+                    BackgroundColor="#28A745"
+                    TextColor="White"
+                    Padding="30,15"
+                    IsVisible="{Binding SelectedFolder, Converter={x:Static BindingConverters.IsNotNull}}" />
+        </Grid>
+    </Grid>
+</ContentPage>

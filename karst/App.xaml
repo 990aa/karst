@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application x:Class="karst.App"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:karst.Views">
+    
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#007ACC</Color>
+            <Color x:Key="SecondaryColor">#6C757D</Color>
+            <Color x:Key="SuccessColor">#28A745</Color>
+            <Color x:Key="DangerColor">#DC3545</Color>
+            
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
+            </Style>
+            
+            <Style TargetType="Button">
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="15,10" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

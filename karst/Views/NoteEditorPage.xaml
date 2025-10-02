@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="karst.Views.NoteEditorPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:viewmodels="clr-namespace:karst.ViewModels"
+             x:DataType="viewmodels:NoteEditorViewModel"
+             Title="{Binding CurrentNote.Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto" 
+          ColumnDefinitions="*,Auto"
+          RowSpacing="5"
+          ColumnSpacing="5">
+
+        <!-- Top Toolbar -->
+        <Grid Grid.Row="0" 
+              Grid.Column="0" 
+              Grid.ColumnSpan="2"
+              ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto"
+              Padding="10"
+              BackgroundColor="#F8F9FA">
+
+            <Button Grid.Column="0"
+                    Text="← Back"
+                    Command="{Binding GoBackCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#007ACC"
+                    Padding="10,5" />
+
+            <Entry Grid.Column="1"
+                   Text="{Binding CurrentNote.Title}"
+                   Placeholder="Note Title"
+                   FontSize="16"
+                   Margin="10,0"
+                   CompletedCommand="{Binding SaveNoteCommand}" />
+
+            <Picker Grid.Column="2"
+                    Title="Paper Type"
+                    ItemsSource="{Binding PaperTypes}"
+                    SelectedItem="{Binding SelectedPaperType}"
+                    WidthRequest="120" />
+
+            <Picker Grid.Column="3"
+                    Title="Paper Size"
+                    ItemsSource="{Binding PaperSizes}"
+                    SelectedItem="{Binding SelectedPaperSize}"
+                    WidthRequest="100" />
+
+            <Button Grid.Column="4"
+                    Text="📷"
+                    Command="{Binding PickImageCommand}"
+                    BackgroundColor="Transparent"
+                    FontSize="18"
+                    Padding="10,5" />
+
+            <Button Grid.Column="5"
+                    Text="Export PDF"
+                    Command="{Binding ExportToPdfCommand}"
+                    BackgroundColor="#DC3545"
+                    TextColor="White"
+                    Padding="15,5" />
+        </Grid>
+
+        <!-- Drawing Tools Sidebar -->
+        <ScrollView Grid.Row="1" 
+                    Grid.Column="1"
+                    WidthRequest="80"
+                    BackgroundColor="#F8F9FA">
+
+            <StackLayout Spacing="10" 
+                         Padding="10">
+
+                <!-- Tools -->
+                <StackLayout Spacing="15">
+                    <Label Text="Tools" 
+                           FontSize="12" 
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+
+                    <CollectionView ItemsSource="{Binding AvailableTools}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedTool}">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DrawingTool">
+                                <Grid HeightRequest="60" 
+                                      Padding="5">
+
+                                    <Frame BackgroundColor="{Binding ., Converter={x:Static BindingConverters.IsEqual}, 
+                                                           ConverterParameter={x:Reference ViewModel}, 
+                                                           ConverterProperty=SelectedTool,
+                                                           TrueValue=#007ACC, 
+                                                           FalseValue=Transparent}}"
+                                           Padding="10"
+                                           CornerRadius="8"
+                                           HasShadow="False">
+
+                                        <Label Text="{Binding Icon}" 
+                                               FontSize="20"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center" />
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- Colors -->
+                <StackLayout Spacing="15">
+                    <Label Text="Colors" 
+                           FontSize="12" 
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+
+                    <FlexLayout Wrap="Wrap" 
+                                JustifyContent="SpaceAround">
+
+                        <Frame BackgroundColor="Transparent"
+                               Padding="0"
+                               HasShadow="False"
+                               CornerRadius="20"
+                               WidthRequest="40"
+                               HeightRequest="40">
+
+                            <BoxView Color="{Binding CurrentColor, Converter={x:Static BindingConverters.SKColorToColor}}"
+                                     WidthRequest="30"
+                                     HeightRequest="30"
+                                     CornerRadius="15" />
+                        </Frame>
+                    </FlexLayout>
+
+                    <CollectionView ItemsSource="{Binding AvailableColors}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="2" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HeightRequest="30" 
+                                      Padding="2">
+
+                                    <BoxView Color="{Binding ., Converter={x:Static BindingConverters.SKColorToColor}}"
+                                             CornerRadius="15">
+                                        <BoxView.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:NoteEditorViewModel}}, Path=SelectColorCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        </BoxView.GestureRecognizers>
+                                    </BoxView>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- Size Slider -->
+                <StackLayout Spacing="10">
+                    <Label Text="Size" 
+                           FontSize="12" 
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+
+                    <Slider Minimum="1" 
+                            Maximum="20" 
+                            Value="{Binding CurrentSize}"
+                            ThumbColor="#007ACC"
+                            MinimumTrackColor="#007ACC" />
+
+                    <Label Text="{Binding CurrentSize, StringFormat='{0:F1}'}" 
+                           FontSize="10"
+                           HorizontalTextAlignment="Center" />
+                </StackLayout>
+
+                <!-- Clear Button -->
+                <Button Text="Clear" 
+                        Command="{Binding ClearCanvasCommand}"
+                        BackgroundColor="#6C757D"
+                        TextColor="White"
+                        CornerRadius="5"
+                        Margin="0,20,0,0" />
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Drawing Canvas -->
+        <skia:SKCanvasView Grid.Row="1" 
+                           Grid.Column="0"
+                           BackgroundColor="White"
+                           EnableTouchEvents="True"
+                           PaintSurface="OnCanvasPaintSurface"
+                           Touch="OnCanvasTouch" />
+
+    </Grid>
+</ContentPage>

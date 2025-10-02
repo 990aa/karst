@@ -1,0 +1,49 @@
+# Build output
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+*.vscode/
+*.DS_Store
+*.vs/
+# Rider
+.idea/
+*.sln.iml
+# C++
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ipch
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.tlog
+*.log
+*.pch
+*.obj
+*.idb
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+*.orig
+*.rej
+*.sublime-workspace
+*.sublime-project
+# MAUI
+wwwroot/
+# NativeLibrary
+NativeLibrary/bin/
+NativeLibrary/obj/
