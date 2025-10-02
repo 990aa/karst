@@ -5,6 +5,7 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              xmlns:viewmodels="clr-namespace:karst.ViewModels"
              xmlns:converters="clr-namespace:karst.Converters"
+             xmlns:models="clr-namespace:karst.Models"
              x:DataType="viewmodels:NoteEditorViewModel"
              Title="{Binding CurrentNote.Title}">
     <ContentPage.Resources>
@@ -33,12 +34,11 @@
                     TextColor="#007ACC"
                     Padding="10,5" />
 
-            <Entry Grid.Column="1"
-                   Text="{Binding CurrentNote.Title}"
-                   Placeholder="Note Title"
-                   FontSize="16"
-                   Margin="10,0"
-                   CompletedCommand="{Binding SaveNoteCommand}" />
+         <Entry Grid.Column="1"
+             Text="{Binding CurrentNote.Title}"
+             Placeholder="Note Title"
+             FontSize="16"
+             Margin="10,0" />
 
             <Picker Grid.Column="2"
                     Title="Paper Type"
@@ -92,14 +92,12 @@
                                 <Grid HeightRequest="60" 
                                       Padding="5">
 
-                                    <Frame BackgroundColor="{Binding ., Converter={x:Static BindingConverters.IsEqual}, 
-                                                           ConverterParameter={x:Reference ViewModel}, 
-                                                           ConverterProperty=SelectedTool,
-                                                           TrueValue=#007ACC, 
-                                                           FalseValue=Transparent}}"
-                                           Padding="10"
-                                           CornerRadius="8"
-                                           HasShadow="False">
+
+                     <!-- TODO: Update this binding to use instance property if needed -->
+                     <Frame BackgroundColor="{Binding ., Converter={StaticResource BindingConverters}, ConverterParameter=IsEqual}"
+                         Padding="10"
+                         CornerRadius="8"
+                         HasShadow="False">
 
                                         <Label Text="{Binding Icon}" 
                                                FontSize="20"
@@ -129,7 +127,7 @@
                                WidthRequest="40"
                                HeightRequest="40">
 
-                            <BoxView Color="{Binding CurrentColor, Converter={x:Static BindingConverters.SKColorToColor}}"
+                            <BoxView Color="{Binding CurrentColor, Converter={StaticResource BindingConverters}, ConverterParameter=SKColorToColor}"
                                      WidthRequest="30"
                                      HeightRequest="30"
                                      CornerRadius="15" />
@@ -146,7 +144,7 @@
                                 <Grid HeightRequest="30" 
                                       Padding="2">
 
-                                    <BoxView Color="{Binding ., Converter={x:Static BindingConverters.SKColorToColor}}"
+                                    <BoxView Color="{Binding ., Converter={StaticResource BindingConverters}, ConverterParameter=SKColorToColor}"
                                              CornerRadius="15">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer 

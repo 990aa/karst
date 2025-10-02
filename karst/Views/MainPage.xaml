@@ -5,6 +5,7 @@
              Title="Note Taking App"
              xmlns:viewmodels="clr-namespace:karst.ViewModels"
              xmlns:converters="clr-namespace:karst.Converters"
+             xmlns:models="clr-namespace:karst.Models"
              x:DataType="viewmodels:MainViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -91,19 +92,19 @@
               ColumnDefinitions="*,Auto"
               Padding="0,10">
 
-            <Label Grid.Column="0"
-                   Text="{Binding SelectedFolder.Name, StringFormat='Selected: {0}'}"
-                   FontSize="14"
-                   VerticalOptions="Center"
-                   IsVisible="{Binding SelectedFolder, Converter={x:Static BindingConverters.IsNotNull}}" />
+         <Label Grid.Column="0"
+             Text="{Binding SelectedFolder.Name, StringFormat='Selected: {0}'}"
+             FontSize="14"
+             VerticalOptions="Center"
+             IsVisible="{Binding SelectedFolder, Converter={StaticResource BindingConverters}, ConverterParameter=IsNotNull}" />
 
-            <Button Grid.Column="1"
-                    Text="New Note"
-                    Command="{Binding CreateNoteCommand}"
-                    BackgroundColor="#28A745"
-                    TextColor="White"
-                    Padding="30,15"
-                    IsVisible="{Binding SelectedFolder, Converter={x:Static BindingConverters.IsNotNull}}" />
+         <Button Grid.Column="1"
+              Text="New Note"
+              Command="{Binding CreateNoteCommand}"
+              BackgroundColor="#28A745"
+              TextColor="White"
+              Padding="30,15"
+              IsVisible="{Binding SelectedFolder, Converter={StaticResource BindingConverters}, ConverterParameter=IsNotNull}" />
         </Grid>
     </Grid>
 </ContentPage>
