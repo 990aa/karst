@@ -31,10 +31,6 @@
     <MauiImage Include="Resources\Maui\mipmap-anydpi-v26\ic_launcher.xml" />
   </ItemGroup>
 
-  <!-- App Icon -->
-  <ItemGroup>
-    <MauiIcon Include="Resources\AppIcon.appiconset" />
-  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
