@@ -5,9 +5,10 @@ namespace karst.Services
 {
     public class SkiaPdfExportService : IPdfExportService
     {
-        public void ExportToPdf(string filePath, IEnumerable<object> drawings)
+        public Task<string> ExportToPdfAsync(karst.Models.Note note)
         {
             // Dummy implementation for build
+            return Task.FromResult(string.Empty);
         }
     }
 }
