@@ -1,6 +1,7 @@
 using karst.ViewModels;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace karst.Views;
 
