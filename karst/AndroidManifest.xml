@@ -4,7 +4,7 @@
     <application
         android:label="Karst"
         android:icon="@mipmap/ic_launcher">
-        <activity android:name="crc643f46942d9dd1fff9.MainActivity">
+    <activity android:name="crc643f46942d9dd1fff9.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
